@@ -1,4 +1,4 @@
-package boyermoore
+package stringmatching
 
 func Boyermoore(str string, substr string) int {
 	table := CalculateTable(substr)
