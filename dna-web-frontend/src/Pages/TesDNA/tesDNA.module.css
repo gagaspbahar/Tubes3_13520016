@@ -11,10 +11,9 @@
 } */
 
 .container {
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: flex;
+    align-items: center;
+    margin-top: 90px;
 }
 
 .submit {
@@ -24,11 +23,7 @@
 }
 
 .result{
-    display: inline-block;
-    position: absolute;
-    flex-direction: column;
-    top: 55%;
-    left:38%;
+    margin-top: 40px;
 }
 
 .resultHeading {

@@ -66,8 +66,10 @@ function Tes(){
             </Form>
           </div>
         </div>
+        <div class="d-flex flex-column justify-content-center align-items-center">
+
         {isSubmitted && (
-        <div className={styles.result}>
+          <div className={styles.result}>
             <Card border ="success" style={{ width: '18rem' }}>
               <Card.Body>
                 {/* card title in center */}
@@ -102,6 +104,7 @@ function Tes(){
       
         </div>
         )}  
+      </div>
       </div>
     </div>
     </>
