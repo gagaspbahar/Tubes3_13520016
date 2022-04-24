@@ -16,10 +16,9 @@
 }
 
 .resultsCount {
-  display: flex;
   align-items: center;
-  margin-left: 70px;
 }
+
 .resultHeading {
     color: var(--white2);
     font-weight: 700;
