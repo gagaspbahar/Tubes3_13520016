@@ -12,10 +12,10 @@ function NavbarDNA(){
         <nav class="navbar navbar-expand-lg bg-success navbar-dark">
             <div class="container-fluid">
                 <a class="navbar-brand ms-4" href="/">
-                  <strong>golangagas</strong>
+                    {/* <img src={logo} width="50" height="50" class="d-inline-block align-top" alt=""/> */}
+                  <strong>Gafira Hospital+</strong>
                 </a>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                {/* create navbar brand */}
                 <li class="nav-item">
                     <a class="nav-link" href="/test"><strong>Tes DNA</strong></a>
                 </li>

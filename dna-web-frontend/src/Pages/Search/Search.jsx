@@ -76,50 +76,52 @@ function Search(){
                         </div>
                     </div>
                     <div className={styles.resultContainer}>
-                        {dummyResults.length > 0 && (
-                            <div className={styles.results}>
-                            <p className={styles.resultsCount}>
-                                Ditemukan {`${dummyResults.length}`} hasil!
-                            </p>
-                            <Card border ="success" style={{ width: '18rem' }}>
-                                <Card.Body>
-                        
-                                    {/* card label and dummy */}
-                                    <Card.Text>
-                                    {dummyResults.map((result, idx) => {
-                                        return (
-                                            <div className={styles.resultCard}>
-                                            <h3 className={styles.resultHeading}>
-                                                Hasil Pencarian #{idx + 1}
-                                            </h3>
-                                            <div className={styles.resultFlex}>
-                                                <p className={styles.resultInfoL}>Date</p>
-                                                <p className={styles.resultInfo}>{result.date}</p>
-                                            </div>
-                                            <div className={styles.resultFlex}>
-                                                <p className={styles.resultInfoL}>Patient</p>
-                                                <p className={styles.resultInfo}>{result.name}</p>
-                                            </div>
-                                            <div className={styles.resultFlex}>
-                                                <p className={styles.resultInfoL}>Disease</p>
-                                                <p className={styles.resultInfo}>{result.disease}</p>
-                                            </div>
-                                            <div className={styles.resultFlex}>
-                                                <p className={styles.resultInfoL}>Similarity</p>
-                                                <p className={styles.resultInfo}>{result.similarity}</p>
-                                            </div>
-                                            <div className={styles.resultFlex}>
-                                                <p className={styles.resultInfoL}>Result</p>
-                                                <p className={styles.resultInfo}>{result.result}</p>
-                                            </div>
-                                            </div>
-                                        );
-                                        })}
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card> 
-                            </div>
-                        )}
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            {dummyResults.length > 0 && (
+                                <div className={styles.results}>
+                                <p className={styles.resultsCount}>
+                                    Ditemukan {`${dummyResults.length}`} hasil!
+                                </p>
+                                <Card border ="success" style={{ width: '18rem' }}>
+                                    <Card.Body>
+                            
+                                        {/* card label and dummy */}
+                                        <Card.Text>
+                                        {dummyResults.map((result, idx) => {
+                                            return (
+                                                <div className={styles.resultCard}>
+                                                <h3 className={styles.resultHeading}>
+                                                    Hasil Pencarian #{idx + 1}
+                                                </h3>
+                                                <div className={styles.resultFlex}>
+                                                    <p className={styles.resultInfoL}>Date</p>
+                                                    <p className={styles.resultInfo}>{result.date}</p>
+                                                </div>
+                                                <div className={styles.resultFlex}>
+                                                    <p className={styles.resultInfoL}>Patient</p>
+                                                    <p className={styles.resultInfo}>{result.name}</p>
+                                                </div>
+                                                <div className={styles.resultFlex}>
+                                                    <p className={styles.resultInfoL}>Disease</p>
+                                                    <p className={styles.resultInfo}>{result.disease}</p>
+                                                </div>
+                                                <div className={styles.resultFlex}>
+                                                    <p className={styles.resultInfoL}>Similarity</p>
+                                                    <p className={styles.resultInfo}>{result.similarity}</p>
+                                                </div>
+                                                <div className={styles.resultFlex}>
+                                                    <p className={styles.resultInfoL}>Result</p>
+                                                    <p className={styles.resultInfo}>{result.result}</p>
+                                                </div>
+                                                </div>
+                                            );
+                                            })}
+                                        </Card.Text>
+                                    </Card.Body>
+                                </Card> 
+                                </div>
+                            )}
+                        </div>   
                     </div>
                 </Form>
             </div>           
