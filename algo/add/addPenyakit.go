@@ -16,11 +16,11 @@ func CheckSequence(input string) bool {
 func AddPenyakit(db *sql.DB) {
     var filename string
     var penyakit string
-    fmt.Println("Masukan nama file: ")
+    fmt.Print("Masukan nama file: ")
     fmt.Scanln(&filename)
-    fmt.Println("Masukan nama penyakit: ")
+    fmt.Print("Masukan nama penyakit: ")
     fmt.Scanln(&penyakit)
-    content, err := os.ReadFile("sequence/" + filename)
+    content, err := os.ReadFile("data/sequence/" + filename)
     if err != nil {
         log.Fatal(err)
     }
