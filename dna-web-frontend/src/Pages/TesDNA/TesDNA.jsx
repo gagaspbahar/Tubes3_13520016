@@ -36,13 +36,13 @@ function Tes(){
         {/* title "Cek DNA Pasien" */}
         <div className={styles.container}>
           <div class="d-grid gap-3">
-            <h1>Cek DNA Pasien</h1>
+            <h1>Tes DNA Pasien</h1>
             <Form onSubmit={handleSubmit}>
               <div className={styles.form}>
               <div class="d-grid gap-3">
                 <Form.Group controlId="formBasicNamaPasien">
                   <Form.Label>Nama Pasien</Form.Label>
-                  <Form.Control type="text" placeholder="Nama Pasien" />
+                  <Form.Control type="text" placeholder="contoh: Gagas Praharsa Bahar" />
                 </Form.Group>
 
                 <Form.Group controlId="formBasicSequenceDNA">
@@ -52,7 +52,7 @@ function Tes(){
 
                 <Form.Group controlId="formBasicNamaPenyakit">
                   <Form.Label>Nama Penyakit</Form.Label>
-                  <Form.Control type="text" placeholder="Nama Penyakit" />
+                  <Form.Control type="text" placeholder="contoh: HIV" />
                 </Form.Group>
               </div>
               </div>

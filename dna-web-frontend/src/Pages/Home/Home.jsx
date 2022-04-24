@@ -26,7 +26,7 @@ function Home(){
                 <div class="d-grid gap-3">
                   <Form.Group controlId="formBasicNamaPenyakit">
                     <Form.Label>Nama Penyakit</Form.Label>
-                    <Form.Control type="text" placeholder="Nama Penyakit" />
+                    <Form.Control type="text" placeholder="contoh: HIV" />
                   </Form.Group>
 
                   <Form.Group controlId="formBasicSequenceDNA">
