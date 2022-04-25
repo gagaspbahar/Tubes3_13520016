@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-    "github.com/gagaspbahar/dna-pattern-matching-web/algo/add"
+    _ "github.com/gagaspbahar/dna-pattern-matching-web/algo/add"
+    "github.com/gagaspbahar/dna-pattern-matching-web/algo/search"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -12,7 +13,7 @@ const (
     username = "root"
     password = ""
     hostname = "127.0.0.1:3306"
-    dbname   = "tubes3_basdat"
+    dbname   = "tubes3"
 )
 
 func dsn() string {  
@@ -26,5 +27,5 @@ func main() {
         return
     }
     defer db.Close()
-    add.AddDataUji(db)
+    search_data.Search_db(db)
 }
