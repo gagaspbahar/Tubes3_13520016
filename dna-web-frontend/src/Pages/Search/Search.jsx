@@ -36,9 +36,9 @@ function Search(){
           {
             date: "22 April 2022",
             name: "Gagas Praharsa Bahar",
-            disease: "Meningitis",
-            similarity: "5%",
-            result: "False",
+            disease: "Sukses",
+            similarity: "100%",
+            result: "True",
           },
         ];
       })
@@ -79,46 +79,35 @@ function Search(){
                         <div class="d-flex flex-column justify-content-center align-items-center">
                             {dummyResults.length > 0 && (
                                 <div className={styles.results}>
-                                <p className={styles.resultsCount}>
-                                    Ditemukan {`${dummyResults.length}`} hasil!
-                                </p>
-                                <Card border ="success" style={{ width: '18rem' }}>
-                                    <Card.Body>
-                            
-                                        {/* card label and dummy */}
-                                        <Card.Text>
-                                        {dummyResults.map((result, idx) => {
-                                            return (
-                                                <div className={styles.resultCard}>
-                                                <h3 className={styles.resultHeading}>
-                                                    Hasil Pencarian #{idx + 1}
-                                                </h3>
-                                                <div className={styles.resultFlex}>
-                                                    <p className={styles.resultInfoL}>Date</p>
-                                                    <p className={styles.resultInfo}>{result.date}</p>
-                                                </div>
-                                                <div className={styles.resultFlex}>
-                                                    <p className={styles.resultInfoL}>Patient</p>
-                                                    <p className={styles.resultInfo}>{result.name}</p>
-                                                </div>
-                                                <div className={styles.resultFlex}>
-                                                    <p className={styles.resultInfoL}>Disease</p>
-                                                    <p className={styles.resultInfo}>{result.disease}</p>
-                                                </div>
-                                                <div className={styles.resultFlex}>
-                                                    <p className={styles.resultInfoL}>Similarity</p>
-                                                    <p className={styles.resultInfo}>{result.similarity}</p>
-                                                </div>
-                                                <div className={styles.resultFlex}>
-                                                    <p className={styles.resultInfoL}>Result</p>
-                                                    <p className={styles.resultInfo}>{result.result}</p>
-                                                </div>
-                                                </div>
-                                            );
-                                            })}
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card> 
+                                  <p className={styles.resultsCount}>
+                                      Ditemukan {`${dummyResults.length}`} hasil!
+                                  </p>
+                                  {dummyResults.map((result, index) => {
+                                      return (
+                                    <table class="table table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th scope="col">#</th>
+                                          <th scope="col">Date</th>
+                                          <th scope="col">Patient</th>
+                                          <th scope="col">Disease</th>
+                                          <th scope="col">Similarity</th>
+                                          <th scope="col">Result</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <th scope="row">{index+1}</th>
+                                          <td>{result.date}</td>
+                                          <td>{result.name}</td>
+                                          <td>{result.disease}</td>
+                                          <td>{result.similarity}</td>
+                                          <td>{result.result}</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>                                         
+                                  );
+                                  })}
                                 </div>
                             )}
                         </div>   
