@@ -36,9 +36,9 @@ function Search(){
           {
             date: "22 April 2022",
             name: "Gagas Praharsa Bahar",
-            disease: "Meningitis",
-            similarity: "5%",
-            result: "False",
+            disease: "Sukses",
+            similarity: "100%",
+            result: "True",
           },
         ];
       })
