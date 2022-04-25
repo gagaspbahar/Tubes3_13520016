@@ -7,7 +7,17 @@ import (
 	"os"
 	"regexp"
     "strings"
+    "strconv"
+    "log"
 )
+
+type Record struct {
+    tanggal string
+    nama_pengguna string
+    nama_penyakit string
+    similarity float64
+    status_tes int
+}
 
 func CheckSequence(input string) (string, string) {
     var ans, ans2 string
@@ -30,7 +40,7 @@ func CheckSequence(input string) (string, string) {
     year := "([0-1]\\d{3}|20[0-1][0-9]|202[0-2])"
     leap :=  "29(\\s)*(-|\\/| )(\\s)*(02|FEB(RUARY)?)(\\s)*(-|\\/| )(\\s)*([0-1][0-9]|20)(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)"
     penyakit := "((\\s)+([a-zA-Z])+)*(\\s)*"
-    regex := "(^(\\s)*" + day_month + "(\\s)*(-|\\/| )(\\s)*" + year + penyakit + "$)|(^" + leap + penyakit + "$)|(^(([a-zA-Z])+(\\s)*)+$)"
+    regex := "(^(\\s)*" + day_month + "(\\s)*(-|\\/| )(\\s)*" + year + penyakit + "$)|(^(\\s)*" + leap + penyakit + "$)|(^(\\s)*(([a-zA-Z])+(\\s)*)+$)"
     r , _ := regexp.Compile(regex)
     r_date, _ := regexp.Compile("(^(\\s)*" + day_month + "(\\s)*(-|\\/| )(\\s)*" + year + ")|(^" + leap + ")")
     res := r.MatchString(input)
@@ -41,13 +51,66 @@ func CheckSequence(input string) (string, string) {
     return ans, ans2
 }
 
+func Clear_whitespace(date string, penyakit string) (string, string) {
+    var ans_date string
+    var l = []string{"jan", "feb", "mar", "apr","may","jun","jul","aug","sep","oct","nov","dec"}
+    date = strings.ReplaceAll(date, " ", "")
+    date = strings.ReplaceAll(date, "/", "")
+    date = strings.ReplaceAll(date, "-", "")
+    if (date != "") {
+        a := []rune(date)
+        day := string(a[0:2])
+        month := string(a[2:len(a)-4])
+        year := string(a[len(a)-4:])
+        if len(month) != 2 {
+            for i := 0; i < 12; i++ {
+                if (strings.ToLower(month[0:3]) == l[i]) {
+                    if (i < 9) {
+                        month = "0" + strconv.Itoa(i+1)
+                    } else {
+                        month = strconv.Itoa(i+1)
+                    }
+                    break
+                }
+            }
+        }
+        ans_date = year + "-" + month + "-" + day
+    }
+    penyakit = strings.TrimSpace(penyakit)
+    space := regexp.MustCompile(`\s+`)
+    penyakit = space.ReplaceAllString(penyakit, " ")
+    return ans_date, penyakit
+}
+
 func Search_db(db *sql.DB) {
+    var results *sql.Rows
+    var err error
     reader := bufio.NewReader(os.Stdin)
     fmt.Print("Masukkan tanggal (day month year) dan nama penyakit: ")
     data, _ := reader.ReadString('\n')
 	data = strings.TrimSuffix(data, "\n")
     data = strings.TrimSuffix(data, "\r")
     date, penyakit := CheckSequence(data)
-    fmt.Println(date)
-    fmt.Println(penyakit)
+    date, penyakit = Clear_whitespace(date, penyakit)
+    if (date != "" && penyakit != "") {
+        results, err = db.Query("SELECT tanggal_tes, nama_pengguna, nama_penyakit, similarity, status_tes FROM data_uji WHERE tanggal_tes = ? AND nama_penyakit = ?",date, penyakit)
+    } else if (penyakit != "") {
+        results, err = db.Query("SELECT tanggal_tes, nama_pengguna, nama_penyakit, similarity, status_tes FROM data_uji WHERE nama_penyakit = ?", penyakit)
+    } else if (date != "") {
+        results, err = db.Query("SELECT tanggal_tes, nama_pengguna, nama_penyakit, similarity, status_tes FROM data_uji WHERE tanggal_tes = ?",date)
+    } else {
+        return
+    }
+    if err != nil {
+        log.Printf("Error %s when SELECT from DB\n", err)
+    }
+    for results.Next() {
+        var record Record 
+        // for each row, scan the result into our tag composite object
+        err = results.Scan(&record.tanggal, &record.nama_pengguna, &record.nama_penyakit, &record.similarity, &record.status_tes)
+        if err != nil {
+            log.Printf("Error %s when insert to DB\n", err)
+        }
+        fmt.Println(record)
+    }
 }

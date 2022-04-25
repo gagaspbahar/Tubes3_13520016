@@ -13,7 +13,7 @@ const (
     username = "root"
     password = ""
     hostname = "127.0.0.1:3306"
-    dbname   = "tubes3_basdat"
+    dbname   = "tubes3"
 )
 
 func dsn() string {  
