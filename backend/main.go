@@ -7,9 +7,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
-	search_data "github.com/gagaspbahar/dna-pattern-matching-web/algo/search"
+	"github.com/gagaspbahar/dna-pattern-matching-web/algo/add/stringmatching"
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
@@ -22,6 +24,13 @@ const (
 type Penyakit struct {
 	Penyakit string `json:"penyakit"`
 	Content  string `json:"content"`
+}
+
+type TesDNA struct {
+	Nama        string `json:"nama"`
+	SequenceDNA string `json:"sequenceDNA"`
+	Penyakit    string `json:"penyakit"`
+	Metode      string `json:"metode"`
 }
 
 func dsn() string {
@@ -37,7 +46,7 @@ func main() {
 		return
 	}
 	defer db.Close()
-	search_data.Search_db(db)
+	// search_data.Search_db(db)
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -46,6 +55,7 @@ func main() {
 	})
 	// r.POST("/add", postAddPenyakit)
 	r.POST("/upload/:filename", handleUpload)
+	r.GET("/tes", getTesDNA)
 	r.Run()
 }
 
@@ -72,4 +82,39 @@ func handleUpload(c *gin.Context) {
 	}
 	filepath := "/data/sequence/" + filename
 	c.JSON(http.StatusOK, gin.H{"filepath": filepath})
+}
+
+func getTesDNA(c *gin.Context) {
+	var tesDNA TesDNA
+	var result int
+	if err := c.BindJSON(&tesDNA); err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		log.Fatal(err)
+		return
+	}
+
+	filepath := "/data/sequenceUser/" + tesDNA.SequenceDNA + ".txt"
+
+	sequence, err := os.ReadFile(filepath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	sequenceString := string(sequence)
+
+	filepath = "/data/sequence/" + tesDNA.Penyakit + ".txt"
+	sequence_penyakit, err := os.ReadFile(filepath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	spString := string(sequence_penyakit)
+
+	if tesDNA.Metode == "KMP" {
+		result = stringmatching.Boyermoore(sequenceString, spString)
+	} else {
+		result = stringmatching.KMP(sequenceString, spString)
+	}
+
+	tanggal := time.Now().Format("2006-01-02")
+
+	c.JSON(http.StatusOK, gin.H{"result": result, "nama": tesDNA.Nama, "penyakit": tesDNA.Penyakit, "tanggal": tanggal})
 }
