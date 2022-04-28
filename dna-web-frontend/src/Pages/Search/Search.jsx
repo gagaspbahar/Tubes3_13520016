@@ -34,8 +34,8 @@ function Search() {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
-        let result = res.data.records
-        setDummyResults(JSON.parse(result))
+        let result = res.data.records;
+        setDummyResults(JSON.parse(result));
       })
       .catch((err) => console.log(err));
   };
@@ -104,7 +104,9 @@ function Search() {
                                     <td>{result.nama_pengguna}</td>
                                     <td>{result.nama_penyakit}</td>
                                     <td>{result.similarity}</td>
-                                    <td>{result.status_tes ? "True" : "False"}</td>
+                                    <td>
+                                      {result.status_tes ? "True" : "False"}
+                                    </td>
                                   </tr>
                                 </tbody>
                               </table>

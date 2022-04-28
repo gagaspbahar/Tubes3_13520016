@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 // import navbar from bootstrap
 import { Form, Button } from "react-bootstrap";
 import NavbarDNA from "../../components/Navbar/Navbar";
@@ -45,7 +45,7 @@ function Home() {
     const data = {
       penyakit: namaPenyakit,
     };
-    console.log(data)
+    console.log(data);
     axiosInstance
       .post("/add", data, {
         headers: {
@@ -54,9 +54,9 @@ function Home() {
       })
       .then((res) => {
         console.log(res);
-        if(res.data.message === "success"){
+        if (res.data.message === "success") {
           setIsSuccess(true);
-        }else{
+        } else {
           setIsSuccess(false);
         }
       })
@@ -98,7 +98,11 @@ function Home() {
                 </div>
                 <div className={styles.submit}>
                   <div class="col-md-12 text-center">
-                    <Button variant="success" type="button" onClick={handleSubmit}>
+                    <Button
+                      variant="success"
+                      type="button"
+                      onClick={handleSubmit}
+                    >
                       <strong>Submit</strong>
                     </Button>
                   </div>

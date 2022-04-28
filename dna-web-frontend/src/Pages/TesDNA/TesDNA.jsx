@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 // import navbar from bootstrap
-import {
-  Form,
-  Button,
-  Card,
-} from "react-bootstrap";
+import { Form, Button, Card } from "react-bootstrap";
 import NavbarDNA from "../../components/Navbar/Navbar";
 import styles from "./tesDNA.module.css";
 
@@ -19,7 +15,6 @@ function Tes() {
       "Access-Control-Allow-Headers": "*",
     },
   });
-
 
   const defaultData = {
     tanggal: "22 April 2022",
@@ -67,11 +62,10 @@ function Tes() {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitted(true);
-    const seq = textName.slice(0, -4)
+    const seq = textName.slice(0, -4);
     const data = {
       nama: namaPasien,
       penyakit: namaPenyakit,
@@ -89,8 +83,8 @@ function Tes() {
         setDummyData(result);
       })
       .catch((err) => console.log(err));
-      console.log(dummyData)
-    };
+    console.log(dummyData);
+  };
 
   return (
     <>
@@ -187,11 +181,15 @@ function Tes() {
                       <div className={styles.resultCard}>
                         <div className={styles.resultFlex}>
                           <p className={styles.resultInfoL}>Date</p>
-                          <p className={styles.resultInfo}>{dummyData.tanggal}</p>
+                          <p className={styles.resultInfo}>
+                            {dummyData.tanggal}
+                          </p>
                         </div>
                         <div className={styles.resultFlex}>
                           <p className={styles.resultInfoL}>Patient</p>
-                          <p className={styles.resultInfo}>{dummyData.nama_pengguna}</p>
+                          <p className={styles.resultInfo}>
+                            {dummyData.nama_pengguna}
+                          </p>
                         </div>
                         <div className={styles.resultFlex}>
                           <p className={styles.resultInfoL}>Disease</p>
