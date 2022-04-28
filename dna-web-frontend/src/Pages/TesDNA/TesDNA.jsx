@@ -1,16 +1,9 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
 // import navbar from bootstrap
 import {
-  Navbar,
-  Nav,
-  NavDropdown,
   Form,
-  FormControl,
   Button,
   Card,
-  Badge,
-  Label,
 } from "react-bootstrap";
 import NavbarDNA from "../../components/Navbar/Navbar";
 import styles from "./tesDNA.module.css";
