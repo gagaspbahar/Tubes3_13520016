@@ -54,6 +54,7 @@ func dsn() string {
 
 func main() {
 	r := gin.Default()
+	r.Use(CORSMiddleware())
 	db, err := sql.Open("mysql", dsn())
 
 	if err != nil {
@@ -69,9 +70,27 @@ func main() {
 	})
 	r.POST("/add", postAddPenyakit(db))
 	r.POST("/upload/:filename", handleUpload)
-	r.GET("/tes", getTesDNA(db))
+	r.POST("/uploadUser/:filename", handleUploadUserSequence)
+	r.POST("/tes", getTesDNA(db))
 	r.GET("/history", getDNAHistory(db))
 	r.Run()
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "*")
+		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }
 
 func handleUpload(c *gin.Context) {
@@ -80,12 +99,10 @@ func handleUpload(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	header_filename := header.Filename
-	log.Printf("filename: %s", header_filename)
-	filename := c.Param("filename")
-	filename = filename + ".txt"
-	fmt.Println(filename)
-	out, err := os.Create("/data/sequence/" + filename)
+	filename := header.Filename
+	log.Printf("filename: %s", filename)
+
+	out, err := os.Create("data/sequence/" + filename)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -96,6 +113,29 @@ func handleUpload(c *gin.Context) {
 		log.Fatal(err)
 	}
 	filepath := "/data/sequence/" + filename
+	c.JSON(http.StatusOK, gin.H{"filepath": filepath})
+}
+
+func handleUploadUserSequence(c *gin.Context) {
+	file, header, err := c.Request.FormFile("file")
+	if err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
+	filename := header.Filename
+	log.Printf("filename: %s", filename)
+
+	out, err := os.Create("data/sequenceUser/" + filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	filepath := "/data/sequenceUser/" + filename
 	c.JSON(http.StatusOK, gin.H{"filepath": filepath})
 }
 
@@ -138,7 +178,10 @@ func getTesDNA(db *sql.DB) func(*gin.Context) {
 		var tesDNA TesDNA
 		var result int
 		var sim float64
+		// rawdata, _ := c.GetRawData()
+		// log.Printf("tesDNA: %s", rawdata)
 		if err := c.BindJSON(&tesDNA); err != nil {
+			log.Printf("gagal bind")
 			c.String(http.StatusBadRequest, "Bad request")
 			log.Fatal(err)
 			return
@@ -183,7 +226,14 @@ func getTesDNA(db *sql.DB) func(*gin.Context) {
 
 		defer insert.Close()
 
-		c.JSON(http.StatusOK, gin.H{"result": result, "nama": tesDNA.Nama, "penyakit": tesDNA.Penyakit, "tanggal": tanggal, "similarity": sim})
+		var record Record
+		record.Nama_pengguna = tesDNA.Nama
+		record.Nama_penyakit = tesDNA.Penyakit
+		record.Similarity = sim
+		record.Status_tes = result
+		record.Tanggal = tanggal
+
+		c.JSON(http.StatusOK, record)
 	}
 }
 
