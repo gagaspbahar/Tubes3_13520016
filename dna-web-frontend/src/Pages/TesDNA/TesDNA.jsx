@@ -5,10 +5,41 @@ import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Card, Badge, Label
 import NavbarDNA from "../../components/Navbar/Navbar";
 import styles from "./tesDNA.module.css";
  
+const LOCALBACKEND = "http://localhost:8080";
 
 function Tes(){
   const textRef = useRef(null);
   const infoRef = useRef(null);
+
+  const [text, setText]=useState(null);
+  const [textName, setTextName]=useState(null);
+  const [namaPasien, setNamaPasien] = useState("");
+  const [namaPenyakit, setNamaPenyakit] = useState("");
+  const [metode, setMetode] = useState("KMP")
+
+  const handleChangePasien = (e) => {
+    setNamaPasien(e.target.value);
+  }
+
+  const handleRadioButton = (e) => {
+    setMetode(e.target.value);
+  }
+
+  const handleChangePenyakit = (e) => {
+    setNamaPenyakit(e.target.value);
+  }
+
+  const handleUploadText = function(ev){
+    // ev.preventDefault();
+    setTextName(ev[0].name);
+    setText(URL.createObjectURL(ev[0]));
+    const data = new FormData();
+    data.append('file', ev[0]);
+    fetch(LOCALBACKEND + '/upload/' + textName, {
+      method: 'POST',
+      body: data,
+    });
+  }
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -44,17 +75,17 @@ function Tes(){
                 <div class="d-grid gap-3">
                   <Form.Group controlId="formBasicNamaPasien">
                     <Form.Label>Nama Pasien</Form.Label>
-                    <Form.Control type="text" placeholder="contoh: Gagas Praharsa Bahar" />
+                    <Form.Control type="text" placeholder="contoh: Gagas Praharsa Bahar" onChange={handleChangePasien} />
                   </Form.Group>
 
                   <Form.Group controlId="formBasicSequenceDNA">
                     <Form.Label>Upload Sequence DNA</Form.Label>
-                    <Form.Control type="file" placeholder="Enter file" />
+                    <Form.Control type="file" placeholder="Enter file" onSubmit={handleSubmit} />
                   </Form.Group>
 
                   <Form.Group controlId="formBasicNamaPenyakit">
                     <Form.Label>Nama Penyakit</Form.Label>
-                    <Form.Control type="text" placeholder="contoh: HIV" />
+                    <Form.Control type="text" placeholder="contoh: HIV" onChange={handleChangePenyakit} />
                   </Form.Group>
                 </div>
               </div>
@@ -62,11 +93,11 @@ function Tes(){
               <div className={styles.radio}>
                 <div class="d-grid gap-3">
                 <div class="form-check">
-                  <input type="radio" class="form-check-input" id="radio1" name="optradio" value="option1" checked/>KMP
+                  <input type="radio" class="form-check-input" id="radio1" name="optradio" value="KMP" onClick={handleRadioButton} checked/>KMP
                   <label class="form-check-label" for="radio1"></label>
                 </div>
                 <div class="form-check">
-                  <input type="radio" class="form-check-input" id="radio2" name="optradio" value="option2"/>Boyer Moore
+                  <input type="radio" class="form-check-input" id="radio2" name="optradio" value="BM" onClick={handleRadioButton} />Boyer Moore
                   <label class="form-check-label" for="radio2"></label>
                 </div>
                 </div>
