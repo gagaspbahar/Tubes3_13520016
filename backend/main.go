@@ -26,7 +26,6 @@ const (
 
 type Penyakit struct {
 	Penyakit string `json:"penyakit"`
-	Content  string `json:"content"`
 }
 
 type TesDNA struct {
@@ -72,7 +71,7 @@ func main() {
 	r.POST("/upload/:filename", handleUpload)
 	r.POST("/uploadUser/:filename", handleUploadUserSequence)
 	r.POST("/tes", getTesDNA(db))
-	r.GET("/history", getDNAHistory(db))
+	r.POST("/history", getDNAHistory(db))
 	r.Run()
 }
 
@@ -142,26 +141,21 @@ func handleUploadUserSequence(c *gin.Context) {
 func postAddPenyakit(db *sql.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
 		var penyakit Penyakit
+		// rawdata, _ := c.GetRawData()
+		// fmt.Println(string(rawdata))
 		if err := c.BindJSON(&penyakit); err != nil {
 			c.String(http.StatusBadRequest, "Bad request")
 			log.Fatal(err)
 			return
 		}
-		filename := penyakit.Penyakit
-		filepath := "/data/sequence/" + penyakit.Penyakit + ".txt"
-		sequence, err := os.Create(filepath)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer sequence.Close()
-
+		filename := penyakit.Penyakit + ".txt"
 		content, err := os.ReadFile("data/sequence/" + filename)
 		if err != nil {
 			log.Fatal(err)
 		}
 		result := CheckDNASequence(string(content))
 		if result {
-			insert, err := db.Query("INSERT INTO sequence_penyakit VALUES ( ?, ? )", penyakit, content)
+			insert, err := db.Query("INSERT INTO sequence_penyakit VALUES ( ?, ? )", penyakit.Penyakit, content)
 			if err != nil {
 				log.Printf("Error %s when insert to DB\n", err)
 			}
@@ -211,7 +205,7 @@ func getTesDNA(db *sql.DB) func(*gin.Context) {
 		if result == 1 {
 			sim = 100
 		} else {
-			sim = float64(stringmatching.LCS(sequenceString, spString)) / float64(len(spString))
+			sim = float64(stringmatching.LCS(sequenceString, spString)) / float64(len(spString)) * 100
 			if sim >= 80 {
 				result = 1
 			}
