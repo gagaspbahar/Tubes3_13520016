@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState} from "react";
 // import navbar from bootstrap
 import { Form, Button } from "react-bootstrap";
 import NavbarDNA from "../../components/Navbar/Navbar";
@@ -17,7 +17,6 @@ function Home() {
   });
 
   const [namaPenyakit, setNamaPenyakit] = useState("");
-  const [sequenceDNA, setSequenceDNA] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChangePenyakit = (e) => {
@@ -55,7 +54,7 @@ function Home() {
       })
       .then((res) => {
         console.log(res);
-        if(res.data.message == "success"){
+        if(res.data.message === "success"){
           setIsSuccess(true);
         }else{
           setIsSuccess(false);

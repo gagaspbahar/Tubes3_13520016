@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 // import navbar from bootstrap
 import {
   Form,
@@ -28,10 +28,7 @@ function Tes() {
     similarity: "30%",
     status_tes: "False",
   };
-  const textRef = useRef(null);
-  const infoRef = useRef(null);
 
-  const [text, setText] = useState("");
   const [textName, setTextName] = useState("");
   const [namaPasien, setNamaPasien] = useState("");
   const [namaPenyakit, setNamaPenyakit] = useState("");
@@ -53,7 +50,6 @@ function Tes() {
   const handleUploadText = function(ev) {
     // ev.preventDefault();
     setTextName(ev.target.files[0].name);
-    setText(URL.createObjectURL(ev.target.files[0]));
     const data = new FormData();
     data.append("file", ev.target.files[0]);
     const filename = ev.target.files[0].name;

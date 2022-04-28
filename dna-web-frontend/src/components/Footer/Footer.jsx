@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import styles from "./footer.module.css";
 // import navbar from bootstrap
-import { Footer, Nav, NavDropdown, Form, FormControl, Button } from "react-bootstrap";
  
 
 function FooterDNA(){
