@@ -24,11 +24,13 @@ DNA String Matching Website is a website that can be used to match DNA string wi
 ### Frontend
 
 - `cd dna-pattern-matching`
+- `npm install`
 - `npm start`
 
 ### Backend
 
 - `cd backend`
+- `go mod download`
 - `go run .`
 
 ### Database
