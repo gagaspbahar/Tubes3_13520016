@@ -18,10 +18,10 @@ import (
 )
 
 const (
-	username = "root"
-	password = "password"
-	hostname = "127.0.0.1:3306"
-	dbname   = "tubes3_basdat"
+	username = "dlUn61tF6K"
+	password = "RcEHz7Svaw"
+	hostname = "remotemysql.com:3306"
+	dbname   = "dlUn61tF6K"
 )
 
 type Penyakit struct {

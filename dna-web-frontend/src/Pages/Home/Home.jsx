@@ -5,11 +5,12 @@ import NavbarDNA from "../../components/Navbar/Navbar";
 import styles from "./home.module.css";
 
 const LOCALBACKEND = "http://localhost:8080";
+const HEROKUBACKEND = "https://shrouded-mountain-85549.herokuapp.com/"
 
 function Home() {
   const axios = require("axios");
   const axiosInstance = axios.create({
-    baseURL: LOCALBACKEND,
+    baseURL: HEROKUBACKEND,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*",
