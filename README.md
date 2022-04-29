@@ -7,6 +7,10 @@
 
 DNA String Matching Website is a website that can be used to match DNA string with a desired DNA sequence in the database. This program utilizes the KMP and Boyer-Moore algorithm to find the DNA sequence in the database. For string similarity, the LCS algorithm is used.
 
+## Deployment
+
+This website is live [here](https://dna-pattern-matching-web.vercel.app/)
+
 ## Features
 
 - Add penyakit to db
