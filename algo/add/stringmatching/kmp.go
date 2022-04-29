@@ -3,6 +3,7 @@ package stringmatching
 
 func CalculatePrefixSuffix(substr string) []int {
 	table := make([]int, len(substr))
+	table[0] = 0
 	j := 0
 	i := 1
 	for i < len(substr) {
@@ -11,9 +12,10 @@ func CalculatePrefixSuffix(substr string) []int {
 			i++
 			j++
 		} else if j == 0 {
+			table[i] = 0
 			i++
 		} else {
-			j = table[j]
+			j = table[j - 1]
 		}
 	}
 	return table
