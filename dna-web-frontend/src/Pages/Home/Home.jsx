@@ -107,7 +107,16 @@ function Home() {
                     </Button>
                   </div>
                 </div>
-                {isSuccess && <p>Sukses menambahkan!</p>}
+                {isSuccess && (
+                  <div class="alert alert-success" role="alert">
+                    Sukses Menambahkan Penyakit!
+                  </div>
+                )}
+                {!isSuccess && (
+                  <div class="alert alert-danger" role="alert">
+                    Gagal Menambahkan Penyakit!
+                  </div>
+                )}
               </Form>
             </div>
           </div>
