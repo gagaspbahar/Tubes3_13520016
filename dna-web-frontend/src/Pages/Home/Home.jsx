@@ -5,7 +5,7 @@ import NavbarDNA from "../../components/Navbar/Navbar";
 import styles from "./home.module.css";
 
 const LOCALBACKEND = "http://localhost:8080";
-const HEROKUBACKEND = "https://shrouded-mountain-85549.herokuapp.com/"
+const HEROKUBACKEND = "https://shrouded-mountain-85549.herokuapp.com/";
 
 function Home() {
   const axios = require("axios");
@@ -20,20 +20,20 @@ function Home() {
   const [namaPenyakit, setNamaPenyakit] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [sequence, setSequence] = useState("");
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const handleChangePenyakit = (e) => {
     setNamaPenyakit(e.target.value);
   };
 
-
   const handleUploadText = function(e) {
     e.preventDefault();
     // const data = new FormData();
     const reader = new FileReader();
-    reader.onload = async (e) => { 
+    reader.onload = async (e) => {
       setSequence(e.target.result);
     };
-    reader.readAsText(e.target.files[0])
+    reader.readAsText(e.target.files[0]);
     // data.append("sequence", ev.target.files[0]);
     // const filename = namaPenyakit + ".txt";
     // axiosInstance
@@ -52,7 +52,7 @@ function Home() {
     e.preventDefault();
     const data = {
       penyakit: namaPenyakit,
-      sequence: sequence
+      sequence: sequence,
     };
     console.log(data);
     axiosInstance
@@ -65,6 +65,7 @@ function Home() {
         console.log(res);
         if (res.data.message === "success") {
           setIsSuccess(true);
+          setHasSubmitted(true);
         } else {
           setIsSuccess(false);
         }
@@ -117,12 +118,12 @@ function Home() {
                   </div>
                 </div>
                 <div className={styles.success}>
-                  {isSuccess && (
+                  {hasSubmitted && isSuccess && (
                     <div class="alert alert-success" role="alert">
                       Sukses Menambahkan Penyakit!
                     </div>
                   )}
-                  {!isSuccess && (
+                  {hasSubmitted && !isSuccess && (
                     <div class="alert alert-danger" role="alert">
                       Gagal Menambahkan Penyakit!
                     </div>

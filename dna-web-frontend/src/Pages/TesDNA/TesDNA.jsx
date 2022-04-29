@@ -5,7 +5,7 @@ import NavbarDNA from "../../components/Navbar/Navbar";
 import styles from "./tesDNA.module.css";
 
 const LOCALBACKEND = "http://localhost:8080";
-const HEROKUBACKEND = "https://shrouded-mountain-85549.herokuapp.com/"
+const HEROKUBACKEND = "https://shrouded-mountain-85549.herokuapp.com/";
 
 function Tes() {
   const axios = require("axios");
@@ -49,10 +49,10 @@ function Tes() {
     e.preventDefault();
     // const data = new FormData();
     const reader = new FileReader();
-    reader.onload = async (e) => { 
+    reader.onload = async (e) => {
       setSequence(e.target.result);
     };
-    reader.readAsText(e.target.files[0])
+    reader.readAsText(e.target.files[0]);
     // setTextName(ev.target.files[0].name);
     // const data = new FormData();
     // data.append("file", ev.target.files[0]);
@@ -73,7 +73,7 @@ function Tes() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
+
     const data = {
       nama: namaPasien,
       penyakit: namaPenyakit,
@@ -89,6 +89,7 @@ function Tes() {
         console.log(res.data);
         result = res.data;
         setDummyData(result);
+        setIsSubmitted(true);
       })
       .catch((err) => console.log(err));
     console.log(dummyData);
