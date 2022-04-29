@@ -26,6 +26,7 @@ const (
 
 type Penyakit struct {
 	Penyakit string `json:"penyakit"`
+	Sequence string `json:"sequence"`
 }
 
 type TesDNA struct {
@@ -166,11 +167,13 @@ func postAddPenyakit(db *sql.DB) func(*gin.Context) {
 			log.Printf("%s", err)
 			return
 		}
-		filename := penyakit.Penyakit + ".txt"
-		content, err := os.ReadFile("data/sequence/" + filename)
-		if err != nil {
-			log.Printf("%s", err)
-		}
+		// filename := penyakit.Penyakit + ".txt"
+		// content, err := os.ReadFile("data/sequence/" + filename)
+		// if err != nil {
+		// 	log.Printf("%s", err)
+		// }
+
+		content := penyakit.Sequence
 		result := CheckDNASequence(string(content))
 		if result {
 			insert, err := db.Query("INSERT INTO sequence_penyakit VALUES ( ?, ? )", penyakit.Penyakit, content)
@@ -199,20 +202,25 @@ func getTesDNA(db *sql.DB) func(*gin.Context) {
 			return
 		}
 
-		filepath := "data/sequenceUser/" + tesDNA.SequenceDNA + ".txt"
+		// filepath := "data/sequenceUser/" + tesDNA.SequenceDNA + ".txt"
 
-		sequence, err := os.ReadFile(filepath)
-		if err != nil {
-			log.Printf("%s", err)
-		}
-		sequenceString := string(sequence)
+		// sequence, err := os.ReadFile(filepath)
+		// if err != nil {
+		// 	log.Printf("%s", err)
+		// }
+		sequenceString := string(tesDNA.SequenceDNA)
 
-		filepath = "data/sequence/" + tesDNA.Penyakit + ".txt"
-		sequence_penyakit, err := os.ReadFile(filepath)
+		// filepath = "data/sequence/" + tesDNA.Penyakit + ".txt"
+		// sequence_penyakit, err := os.ReadFile(filepath)
+		// if err != nil {
+		// 	log.Printf("%s", err)
+		// }
+
+		var spString string
+		err := db.QueryRow("SELECT sequence FROM sequence_penyakit WHERE penyakit = ?", tesDNA.Penyakit).Scan(&spString)
 		if err != nil {
-			log.Printf("%s", err)
+			log.Printf("Error %s when SELECT from DB\n", err)
 		}
-		spString := string(sequence_penyakit)
 
 		if tesDNA.Metode == "KMP" {
 			result = stringmatching.Boyermoore(sequenceString, spString)

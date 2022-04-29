@@ -19,32 +19,40 @@ function Home() {
 
   const [namaPenyakit, setNamaPenyakit] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [sequence, setSequence] = useState("");
 
   const handleChangePenyakit = (e) => {
     setNamaPenyakit(e.target.value);
   };
 
-  const handleUploadText = function(ev) {
-    ev.preventDefault();
-    const data = new FormData();
-    data.append("file", ev.target.files[0]);
-    const filename = namaPenyakit + ".txt";
-    axiosInstance
-      .post("/upload/" + filename, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+
+  const handleUploadText = function(e) {
+    e.preventDefault();
+    // const data = new FormData();
+    const reader = new FileReader();
+    reader.onload = async (e) => { 
+      setSequence(e.target.result);
+    };
+    reader.readAsText(e.target.files[0])
+    // data.append("sequence", ev.target.files[0]);
+    // const filename = namaPenyakit + ".txt";
+    // axiosInstance
+    //   .post("/upload/" + filename, data, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
       penyakit: namaPenyakit,
+      sequence: sequence
     };
     console.log(data);
     axiosInstance
