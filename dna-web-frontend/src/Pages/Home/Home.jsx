@@ -28,24 +28,11 @@ function Home() {
 
   const handleUploadText = function(e) {
     e.preventDefault();
-    // const data = new FormData();
     const reader = new FileReader();
     reader.onload = async (e) => {
       setSequence(e.target.result);
     };
     reader.readAsText(e.target.files[0]);
-    // data.append("sequence", ev.target.files[0]);
-    // const filename = namaPenyakit + ".txt";
-    // axiosInstance
-    //   .post("/upload/" + filename, data, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => console.log(err));
   };
 
   const handleSubmit = (e) => {

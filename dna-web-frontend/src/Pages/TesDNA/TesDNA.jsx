@@ -44,28 +44,12 @@ function Tes() {
   };
 
   const handleUploadText = function(e) {
-    // ev.preventDefault();
     e.preventDefault();
-    // const data = new FormData();
     const reader = new FileReader();
     reader.onload = async (e) => {
       setSequence(e.target.result);
     };
     reader.readAsText(e.target.files[0]);
-    // setTextName(ev.target.files[0].name);
-    // const data = new FormData();
-    // data.append("file", ev.target.files[0]);
-    // const filename = ev.target.files[0].name;
-    // axiosInstance
-    //   .post("/uploadUser/" + filename, data, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => console.log(err));
   };
 
   const [isSubmitted, setIsSubmitted] = useState(false);

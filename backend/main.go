@@ -4,10 +4,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
-	"os"
 	"regexp"
 	"time"
 
@@ -69,8 +67,6 @@ func main() {
 		})
 	})
 	r.POST("/add", postAddPenyakit(db))
-	r.POST("/upload/:filename", handleUpload)
-	r.POST("/uploadUser/:filename", handleUploadUserSequence)
 	r.POST("/tes", getTesDNA(db))
 	r.POST("/history", getDNAHistory(db))
 	r.Run()
@@ -93,70 +89,6 @@ func CORSMiddleware() gin.HandlerFunc {
 	}
 }
 
-func handleUpload(c *gin.Context) {
-	file, header, err := c.Request.FormFile("file")
-	if err != nil {
-		c.String(http.StatusBadRequest, "Bad request")
-		return
-	}
-	filename := header.Filename
-	log.Printf("filename: %s", filename)
-
-	out, err := os.Create("data/sequence/" + filename)
-	if err != nil {
-		log.Printf("%s", err)
-	}
-	defer out.Close()
-
-	_, err = io.Copy(out, file)
-	if err != nil {
-		log.Printf("%s", err)
-	}
-	filepath := "/data/sequence/" + filename
-	content, err := os.ReadFile("data/sequence/" + filename)
-	if err != nil {
-		log.Printf("%s", err)
-	}
-	result := CheckDNASequence(string(content))
-	if result {
-		c.JSON(http.StatusOK, gin.H{"filepath": filepath, "message": "success"})
-	} else {
-		c.JSON(http.StatusOK, gin.H{"message": "failed"})
-	}
-}
-
-func handleUploadUserSequence(c *gin.Context) {
-	file, header, err := c.Request.FormFile("file")
-	if err != nil {
-		c.String(http.StatusBadRequest, "Bad request")
-		return
-	}
-	filename := header.Filename
-	log.Printf("filename: %s", filename)
-
-	out, err := os.Create("data/sequenceUser/" + filename)
-	if err != nil {
-		log.Printf("%s", err)
-	}
-	defer out.Close()
-
-	_, err = io.Copy(out, file)
-	if err != nil {
-		log.Printf("%s", err)
-	}
-	filepath := "/data/sequenceUser/" + filename
-	content, err := os.ReadFile("data/sequenceUser/" + filename)
-	if err != nil {
-		log.Printf("%s", err)
-	}
-	result := CheckDNASequence(string(content))
-	if result {
-		c.JSON(http.StatusOK, gin.H{"filepath": filepath, "message": "success"})
-	} else {
-		c.JSON(http.StatusOK, gin.H{"message": "failed"})
-	}
-}
-
 func postAddPenyakit(db *sql.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
 		var penyakit Penyakit
@@ -167,11 +99,6 @@ func postAddPenyakit(db *sql.DB) func(*gin.Context) {
 			log.Printf("%s", err)
 			return
 		}
-		// filename := penyakit.Penyakit + ".txt"
-		// content, err := os.ReadFile("data/sequence/" + filename)
-		// if err != nil {
-		// 	log.Printf("%s", err)
-		// }
 
 		content := penyakit.Sequence
 		result := CheckDNASequence(string(content))
@@ -193,8 +120,6 @@ func getTesDNA(db *sql.DB) func(*gin.Context) {
 		var tesDNA TesDNA
 		var result int
 		var sim float64
-		// rawdata, _ := c.GetRawData()
-		// log.Printf("tesDNA: %s", rawdata)
 		if err := c.BindJSON(&tesDNA); err != nil {
 			log.Printf("gagal bind")
 			c.String(http.StatusBadRequest, "Bad request")
@@ -202,19 +127,7 @@ func getTesDNA(db *sql.DB) func(*gin.Context) {
 			return
 		}
 
-		// filepath := "data/sequenceUser/" + tesDNA.SequenceDNA + ".txt"
-
-		// sequence, err := os.ReadFile(filepath)
-		// if err != nil {
-		// 	log.Printf("%s", err)
-		// }
 		sequenceString := string(tesDNA.SequenceDNA)
-
-		// filepath = "data/sequence/" + tesDNA.Penyakit + ".txt"
-		// sequence_penyakit, err := os.ReadFile(filepath)
-		// if err != nil {
-		// 	log.Printf("%s", err)
-		// }
 
 		var spString string
 		err := db.QueryRow("SELECT sequence FROM sequence_penyakit WHERE penyakit = ?", tesDNA.Penyakit).Scan(&spString)
