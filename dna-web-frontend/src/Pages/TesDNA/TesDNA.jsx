@@ -17,11 +17,11 @@ function Tes() {
   });
 
   const defaultData = {
-    tanggal: "22 April 2022",
-    nama_pengguna: "Gagas Praharsa Bahar",
-    nama_penyakit: "HIV",
-    similarity: "30%",
-    status_tes: "False",
+    tanggal: "unknown",
+    nama_pengguna: "unknown",
+    nama_penyakit: "unknown",
+    similarity: "unknown%",
+    status_tes: "Test Failed",
   };
 
   const [textName, setTextName] = useState("");
