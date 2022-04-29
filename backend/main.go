@@ -112,7 +112,16 @@ func handleUpload(c *gin.Context) {
 		log.Fatal(err)
 	}
 	filepath := "/data/sequence/" + filename
-	c.JSON(http.StatusOK, gin.H{"filepath": filepath})
+	content, err := os.ReadFile("data/sequence/" + filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	result := CheckDNASequence(string(content))
+	if result {
+		c.JSON(http.StatusOK, gin.H{"filepath": filepath, "message": "success"})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"message": "failed"})
+	}
 }
 
 func handleUploadUserSequence(c *gin.Context) {
@@ -135,7 +144,16 @@ func handleUploadUserSequence(c *gin.Context) {
 		log.Fatal(err)
 	}
 	filepath := "/data/sequenceUser/" + filename
-	c.JSON(http.StatusOK, gin.H{"filepath": filepath})
+	content, err := os.ReadFile("data/sequenceUser/" + filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	result := CheckDNASequence(string(content))
+	if result {
+		c.JSON(http.StatusOK, gin.H{"filepath": filepath, "message": "success"})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"message": "failed"})
+	}
 }
 
 func postAddPenyakit(db *sql.DB) func(*gin.Context) {
