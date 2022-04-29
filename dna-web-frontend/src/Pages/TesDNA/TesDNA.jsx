@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import navbar from bootstrap
 import { Form, Button, Card } from "react-bootstrap";
 import NavbarDNA from "../../components/Navbar/Navbar";
 import styles from "./tesDNA.module.css";
